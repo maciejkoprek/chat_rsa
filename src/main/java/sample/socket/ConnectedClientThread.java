@@ -137,6 +137,7 @@ class ConnectedClientThread extends Thread {
 
         public void sendMessage(String orginalMessage, String username) throws SocketException, IOException, ClassNotFoundException{
             String encryptMessage = rsaService.encrypt(orginalMessage, clientK, clientN);
+            log.info("Server->Client: ("+orginalMessage+") -> "+encryptMessage);
             ServerContentMessage outMessage = new ServerContentMessage(encryptMessage, LocalTime.now(), username);
             out.writeObject(outMessage);
             out.flush();

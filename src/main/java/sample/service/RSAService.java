@@ -4,6 +4,10 @@ import lombok.Getter;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by maciek on 07.01.17.
@@ -28,16 +32,28 @@ public class RSAService {
     }
 
     public void generateKeys() {
-        SecureRandom r = new SecureRandom();
-        BigInteger p = new BigInteger(1024 / 2, 100, r);
-        BigInteger q = new BigInteger(1024 / 2, 100, r);
+        Integer bitLength = 1024 / 2;
+        Integer certainrty = 100;
+        List<String> oddRelativelyPrimeNumbers = Arrays.asList("3", "5", "7");
+
+        SecureRandom rs = new SecureRandom();
+        BigInteger p = new BigInteger(bitLength, certainrty, rs);
+        BigInteger q = new BigInteger(bitLength, certainrty, rs);
+
+        // n = p * q
         n = p.multiply(q);
-        BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q
-                .subtract(BigInteger.ONE));
-        k = new BigInteger("3");
-        while (m.gcd(k).intValue() > 1) {
+
+        // v = (p-1) * (q-1)
+        BigInteger v = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+
+        k = new BigInteger(oddRelativelyPrimeNumbers.get(rs.nextInt(oddRelativelyPrimeNumbers.size())));
+
+        //gcd(k, v) = 1
+        while (v.gcd(k).intValue() > 1) {
             k = k.add(new BigInteger("2"));
         }
-        d = k.modInverse(m);
+
+        //compute d by (d*k)%v = (k*d)%v = 1
+        d = k.modInverse(v);
     }
 }

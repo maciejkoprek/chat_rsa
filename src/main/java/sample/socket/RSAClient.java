@@ -170,6 +170,8 @@ public class RSAClient {
             try {
                 String encryptMessage = rsaService.encrypt(orginalMessage, serverK, serverN);
 
+                log.info("Client-Server: ("+orginalMessage+") -> "+encryptMessage);
+
                 ClientContentMessage outMessage = new ClientContentMessage(encryptMessage, LocalTime.now());
                 out.writeObject(outMessage);
                 out.flush();
