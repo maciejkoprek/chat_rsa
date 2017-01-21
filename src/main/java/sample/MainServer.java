@@ -7,6 +7,6 @@ import sample.socket.RSAServer;
  */
 public class MainServer {
     public static void main(String[] args) {
-            RSAServer rsaServer = new RSAServer(args);
+        RSAServer rsaServer = new RSAServer(args);
     }
 }
